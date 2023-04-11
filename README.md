@@ -1,2 +1,1 @@
-# SCAM
-Simulating Candida Agents vs Macrophages.
+# SCAM - Simulating Candida Agents vs Macrophages.
