@@ -5,3 +5,5 @@ class Payoff():
     
     def score(self, action_p1, action_p2):
         return self.score_comp[action_p1][action_p2]
+
+    
