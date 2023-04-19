@@ -2,3 +2,4 @@
 # $ conda create --name <env> --file <this file>
 # platform: linux-64
 python=3.11.3
+numpy=1.24.2
