@@ -1,13 +1,21 @@
 import random
-from directions import directions
+from enum import Enum
+from agent_based_simulation.directions import directions
+
+class AgentTypes(Enum):
+    DEFAULT = 0
+    CANDIDA = 1
+    MACROPHAGE = 2
 
 class Agent:
-    def __init__(self, ID, x = 0, y = 0, d = 0, color="blue", bounds_x = 30, bounds_y = 30):
+    def __init__(self, ID, x = 0, y = 0, d = 0, size=1, color="blue", agent_type = AgentTypes.DEFAULT, bounds_x = 30, bounds_y = 30):
         self.ID = ID
         self.x_pos = x
         self.y_pos = y
+        self.size = size
         self.direction = d
         self.color = color
+        self.type = agent_type
         self.bounds_x = bounds_x
         self.bounds_y = bounds_y
     

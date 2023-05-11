@@ -1,14 +1,16 @@
 import tkinter
 import time
 import random
-from directions import directions
-from agent import Agent
+from agent_based_simulation.agent import Agent
+from agent_based_simulation.candida import Candida
+from agent_based_simulation.macrophage import Macrophage
+from agent_based_simulation.directions import directions
  
 # width of the window
-window_width=700
+window_width=900
 
 # height of the window
-window_height=700
+window_height=900
 
 # row count
 rows = 100
@@ -17,38 +19,63 @@ rows = 100
 columns = 100
 
 # number of agents
-n_agents = 50
+n_candida = 100
+n_macrophages = 20
 position_dict = dict()
-
-# the pixel movement of ball for each iteration
-animation_ball_min_movement = 5
 
 # delay between successive frames in seconds
 refresh_rate = 0.1
 
 # init agents
 def initialise_agents():
+  print("INITIALISING AGENTS:")
   _agents = list()
   y_pos = dict.fromkeys(range(rows), None)
   x_pos = dict.fromkeys(range(columns), None)
-  for i in range(n_agents):
+  print(f"Spawning {n_candida} Candida agents.")
+  for i in range(n_candida):
     x = None
     y = None
-    while x == None:
+    while x == None and y == None:
       _x = random.choice(range(columns))
-      if x_pos[_x] == None:
-        x = _x
-        x_pos[_x] = _x
-    
-    while y == None:
       _y = random.choice(range(rows))
-      if y_pos[_y] == None:
-        y = _y
-        y_pos[_y] = _y
-    agent = Agent(i, x, y, random.choice(list(directions)), bounds_x=100, bounds_y=100)
+      if x_pos[_x] == None or y_pos[_y] == None:
+        if x == None:
+          x = _x
+          x_pos[_x] = _x
+        if y == None:
+          y = _y
+          y_pos[_y] = _y
+    candida = Candida(i, x, y, random.choice(list(directions)), bounds_x=100, bounds_y=100)
     key = f'({x},{y})'
     position_dict.update({key: [i]})
-    _agents.append(agent)
+    _agents.append(candida)
+  
+  print(f"Spawning {n_macrophages} Macrophage agents.")
+  for i in range(n_macrophages):
+    x = None
+    y = None
+    while x == None and y == None:
+      _x = random.choice(range(columns))
+      _y = random.choice(range(rows))
+      if x_pos[_x] == None or y_pos[_y] == None:
+        if x == None:
+          x = _x
+          x_pos[_x] = _x
+        if y == None:
+          y = _y
+          y_pos[_y] = _y
+    macrophage = Macrophage(i+n_candida, x, y, random.choice(list(directions)), bounds_x=100, bounds_y=100)
+    key = f'({x},{y})'
+    position_dict.update({key: [i+n_candida]})
+    # key = f'({x},{y+1})'
+    # position_dict.update({key: [i+n_candida]})
+    # key = f'({x+1},{y})'
+    # position_dict.update({key: [i+n_candida]})
+    # key = f'({x+1},{y+1})'
+    # position_dict.update({key: [i+n_candida]})
+    _agents.append(macrophage)
+  print("Finished spawning")
   return _agents
 
 agents = initialise_agents()
@@ -63,7 +90,7 @@ def create_grid(canvas):
 # The main window of the animation
 def create_window():
   window = tkinter.Tk()
-  window.title("Tkinter Animation Demo")
+  window.title("Tkinter Simulation Demo")
   window.geometry(f'{window_width}x{window_height}')
   return window
  
@@ -79,9 +106,10 @@ def spawn_agents(canvas):
   for agent in agents:
     agent_width = window_width/columns
     agent_height = window_height/rows
+    print(f'({agent.x_pos},{agent.y_pos})')
     x = agent.x_pos*agent_width
     y = agent.y_pos*agent_height
-    canvas_agent = canvas.create_rectangle(x+1, y+1, x+agent_width-1, y+agent_height-1, fill=agent.color)
+    canvas_agent = canvas.create_rectangle(x+0.05, y+0.05, x+(agent_width*agent.size)-0.05, y+(agent_height*agent.size)-0.05, fill=agent.color)
     canvas_agents.append(canvas_agent)
 
 def update_agents(canvas):
@@ -134,7 +162,10 @@ def simulate(window, canvas):
     #   xinc = -xinc
     # if yl < abs(yinc) or yr > window_height-abs(yinc):
     #   yinc = -yinc
- 
+
+def run():
+  print("LOL")
+
 # The actual execution starts here
 window = create_window()
 window_canvas = create_canvas(window)
