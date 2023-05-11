@@ -11,20 +11,20 @@ window_width=700
 window_height=700
 
 # row count
-rows = 30
+rows = 100
 
 # column count
-columns = 30
+columns = 100
 
 # number of agents
-n_agents = 10
+n_agents = 50
 position_dict = dict()
 
 # the pixel movement of ball for each iteration
 animation_ball_min_movement = 5
 
 # delay between successive frames in seconds
-refresh_rate = 0.25
+refresh_rate = 0.1
 
 # init agents
 def initialise_agents():
@@ -45,7 +45,7 @@ def initialise_agents():
       if y_pos[_y] == None:
         y = _y
         y_pos[_y] = _y
-    agent = Agent(i, x, y, random.choice(list(directions)))
+    agent = Agent(i, x, y, random.choice(list(directions)), bounds_x=100, bounds_y=100)
     key = f'({x},{y})'
     position_dict.update({key: [i]})
     _agents.append(agent)
@@ -104,8 +104,8 @@ def update_agents(canvas):
     agent_x_1 = agent.x_pos*(window_width/columns) - agent_x_1
     agent_y_1 = agent.y_pos*(window_height/rows) - agent_y_1
     canvas.move(canvas_agent, agent_x_1, agent_y_1)
-  if len(position_dict) < n_agents:
-    print(position_dict)
+  # if len(position_dict) < n_agents:
+  #   print(position_dict)
     
 def check_collision():
   keys = position_dict.keys()
