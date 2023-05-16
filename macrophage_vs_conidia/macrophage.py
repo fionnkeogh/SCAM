@@ -7,5 +7,3 @@ class Macrophage(Player):
         self.type = 'macrophage'
 
 
-test = Macrophage("testm", "1010")
-print(test.type)
