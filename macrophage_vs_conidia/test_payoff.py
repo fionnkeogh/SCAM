@@ -1,5 +1,5 @@
 import unittest
-from payoff import Payoff
+from macrophage_vs_conidia.payoff import Payoff
 
 class TestPayoff(unittest.TestCase):
     

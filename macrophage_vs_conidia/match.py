@@ -1,6 +1,6 @@
-from macrophage import Macrophage
-from candida import Candida
-from payoff import Payoff
+from macrophage_vs_conidia.macrophage import Macrophage
+from macrophage_vs_conidia.candida import Candida
+from macrophage_vs_conidia.payoff import Payoff
 import random
 
 
@@ -36,9 +36,9 @@ class Match():
     def get_results(self):
         return (self.macrophage.score, self.candida.score)
         
-p1 = Macrophage('passive', '1111')
-p2 = Candida('agressive', '1111')
-pay = Payoff()
-m = Match(p1, p2, pay, 20, 0.1)
-m.play()
-print(m.get_results())
+#p1 = Macrophage('passive', '1111')
+#p2 = Candida('agressive', '1111')
+#pay = Payoff()
+#m = Match(p1, p2, pay, 20, 0.1)
+#m.play()
+#print(m.get_results())

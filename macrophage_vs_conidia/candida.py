@@ -1,4 +1,4 @@
-from player import Player
+from macrophage_vs_conidia.player import Player
 
 class Candida(Player):
     
