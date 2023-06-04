@@ -30,7 +30,7 @@ def create_canvas(window, width, height, size):
   return canvas
 
 def spawn_agents(canvas, size, n_candida, n_macrophages, simulation):
-  for agent in simulation.STATE.get_objects():
+  for agent in simulation.STATE.get_agents():
     agent_width = size[0]/simulation.size[0]
     agent_height = size[1]/simulation.size[1]
     x = agent.x_pos*agent_width
@@ -38,8 +38,15 @@ def spawn_agents(canvas, size, n_candida, n_macrophages, simulation):
     canvas_agent = canvas.create_oval(x+0.05, y+0.05, x+(agent_width*agent.size)-0.05, y+(agent_height*agent.size)-0.05, fill=agent.color)
     canvas_agents.append(canvas_agent)
 
+def spawn_cytokines(canvas, size, simulation):
+  for cytokine in simulation.STATE.get_cytokine_objects():
+    width = size[0]/simulation.size[0]
+    height = size[1]/simulation.size[1]
+    x, y = cytokine.get_position()
+    canvas_cytokine = canvas.create_rectangle(x, y, x+(width*cytokine.size), y+(height*cytokine.size), fill=cytokine.color)
+
 def update_agents(window, canvas, simulation):
-  for i, agent in enumerate(simulation.STATE.get_objects()):
+  for i, agent in enumerate(simulation.STATE.get_agents()):
     canvas_agent = canvas_agents[i]
     agent_x_1, agent_y_1, agent_x_2, agent_y_2 = canvas.coords(canvas_agent)
     agent_x_1 = agent.x_pos*(window.winfo_width()/simulation.size[0]) - agent_x_1

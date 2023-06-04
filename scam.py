@@ -10,7 +10,7 @@ if len(sys.argv) > 1:
     simulation = simulator.Simulation([50, 50, 70, 30])
     win_tuple = window.init(ratio, simulation)
     i = 0
-    max_steps = 100
+    max_steps = int(sys.argv[3])
     while True:
         if i < max_steps:
             simulation.step()

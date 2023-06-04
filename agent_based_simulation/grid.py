@@ -2,13 +2,22 @@ import random
 import math
 
 class Cytokine:
-    def __init__(self, ID, pos):
+    def __init__(self, ID, size, pos, color, spawnerID):
         self.ID = ID
+        self.spawnerID = spawnerID
+        self.size = size
         self.timer = random.randint(8, 12)
         self.max_timer = self.timer
         self.position = pos
+        self.color = color
         self.diameter = 1
     
+    def get_spawner(self):
+        return self.spawnerID
+
+    def get_size(self):
+        return self.size
+
     def get_position(self):
         return self.position
 

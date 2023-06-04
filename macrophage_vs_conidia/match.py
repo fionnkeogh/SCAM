@@ -14,6 +14,7 @@ class Match():
         self.err_rate = error
     
     def play(self):
+        played_passive = False
         for i in range(self.rounds):
             action_p1 = self.macrophage.get_action()
             action_p2 = self.candida.get_action()
@@ -29,9 +30,16 @@ class Match():
             result = self.payoff.score(int(action_p1), int(action_p2))
             payoff_p1 = result[0]
             payoff_p2 = result[1]
-                                       
+            
+            if int(action_p1) == 0:
+                played_passive = True
+            
             self.macrophage.add_score(payoff_p1)
             self.candida.add_score(payoff_p2)
+        if played_passive:
+            return 1
+        else:
+            return None
 
     def get_results(self):
         return (self.macrophage.score, self.candida.score)
