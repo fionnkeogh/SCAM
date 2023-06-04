@@ -1,6 +1,7 @@
 import sys
 import agent_based_simulation.frame as window
 import agent_based_simulation.simulator as simulator
+from matplotlib import pyplot as plt
 
 if len(sys.argv) > 1:
     print(sys.argv[1:])
@@ -15,6 +16,12 @@ if len(sys.argv) > 1:
         if i < max_steps:
             simulation.step()
             i += 1
+        else:
+            macro_strategies = simulation.STATE.get_macrophage_strategies()
+            patho_strategies = simulation.STATE.get_pathogen_strategies()
+            print(macro_strategies)
+            print(patho_strategies)
+            #plt.plot()
         window.update(win_tuple[0], ratio, win_tuple[1], simulation)
     #window.run(ratio)
 else:

@@ -103,27 +103,30 @@ class State:
     def increase_time(self):
         self.STATE["Step"] += 1
 
-    def get_strategies(self):
-        return self.STATE["Strategies"]
+    def get_macrophage_strategies(self):
+        return self.STATE["MacrophageStrategies"]
+    
+    def get_pathogen_strategies(self):
+        return self.STATE["PathogenStrategies"]
     
     def update_strategies(self):
-        macrophage.strats = {}
+        macrophage_strats = {}
         for macrophage in self.get_macrophage_objects():
             strat = macrophage.brain.get_strategy()
-            if strat in macrophage.strats:
-                macrophage.strats.update({strat, macrophage.strats.get(strat) + 1})
+            if strat in macrophage_strats:
+                macrophage_strats.update({strat: macrophage_strats.get(strat) + 1})
             else:
-                macrophage.strats.update({strat, 1})
-        self.STATE.update({'MacrophageStrategies': macrophage.strats})
+                macrophage_strats.update({strat: 1})
+        self.STATE.update({'MacrophageStrategies': macrophage_strats})
         
         pathogen_strats = {}
         for pathogen in self.get_pathogen_objects():
             strat = pathogen.brain.get_strategy()
             if strat in pathogen_strats:
-                pathogen_strats.update({strat, pathogen_strats.get(strat) + 1})
+                pathogen_strats.update({strat: pathogen_strats.get(strat) + 1})
             else:
-                pathogen_strats.update({strat, 1})
-        self.STATE.update({'CytokineStrategies': macrophage.strats})
+                pathogen_strats.update({strat: 1})
+        self.STATE.update({'PathogenStrategies': pathogen_strats})
         
     
 
@@ -150,7 +153,6 @@ class Simulation:
             self.logger.error("No grid to get positions for.")
         self.init_pathogens(self.num_path, possible_positions, self.size)
         self.init_macrophages(self.num_phages, possible_positions, self.size)
-        self.get_strategies()
         self.logger.log_state(self.STATE.get_state())
 
 
