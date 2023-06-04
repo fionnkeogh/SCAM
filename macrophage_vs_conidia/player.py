@@ -63,3 +63,6 @@ class Player():
 
     def reset_score(self):
         self.score = 0
+    
+    def get_strategy(self):
+        return self.strategy

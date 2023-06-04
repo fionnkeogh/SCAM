@@ -14,7 +14,9 @@ class State:
             'CytokineElements': list(),
             'Grid': list(),
             'PayOff': Payoff(),
-            "Step": 0
+            "Step": 0,
+            'MacrophageStrategies': dict(),
+            'PathogenStrategies': dict()
         }
     
     def add_grid(self, grid):
@@ -72,6 +74,29 @@ class State:
 
     def increase_time(self):
         self.STATE["Step"] += 1
+
+    def get_strategies(self):
+        return self.STATE["Strategies"]
+    
+    def update_strategies(self):
+        macrophage.strats = {}
+        for macrophage in self.get_macrophage_objects():
+            strat = macrophage.brain.get_strategy()
+            if strat in macrophage.strats:
+                macrophage.strats.update({strat, macrophage.strats.get(strat) + 1})
+            else:
+                macrophage.strats.update({strat, 1})
+        self.STATE.update({'MacrophageStrategies': macrophage.strats})
+        
+        pathogen_strats = {}
+        for pathogen in self.get_pathogen_objects():
+            strat = pathogen.brain.get_strategy()
+            if strat in pathogen_strats:
+                pathogen_strats.update({strat, pathogen_strats.get(strat) + 1})
+            else:
+                pathogen_strats.update({strat, 1})
+        self.STATE.update({'CytokineStrategies': macrophage.strats})
+        
     
 
 class Simulation:
@@ -97,6 +122,7 @@ class Simulation:
             self.logger.error("No grid to get positions for.")
         self.init_pathogens(self.num_path, possible_positions, self.size)
         self.init_macrophages(self.num_phages, possible_positions, self.size)
+        self.get_strategies()
         self.logger.log_state(self.STATE.get_state())
 
 
@@ -134,6 +160,7 @@ class Simulation:
         for macrophage in self.STATE.get_macrophage_objects():
             games.extend(macrophage.check_for_game(pathogens))
         self.play_games(games)
+        self.STATE.update_strategies()
         self.logger.log_state(self.STATE.get_state())
 
     def play_games(self, games):
