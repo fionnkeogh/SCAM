@@ -8,13 +8,13 @@ import random
 import copy
 
 class State:
-    def __init__(self):
+    def __init__(self, payoff_type):
         self.STATE = {
             'Pathogens': list(),
             'Macrophages': list(),
             'CytokineElements': list(),
             'Grid': list(),
-            'PayOff': Payoff(),
+            'PayOff': Payoff(payoff_type),
             "Step": 0,
             'MacrophageStrategies': dict(),
             'PathogenStrategies': dict()
@@ -141,11 +141,13 @@ class Simulation:
             self.size = (args[0], args[1])
             self.num_path = args[2]
             self.num_phages = args[3]
+            self.payoff = args[4] if len(args) >= 5 else None
             
         self.logger.log("Size of world: "+str(self.size))
         self.logger.log("Number of Pathogens: " + str(self.num_path))
         self.logger.log("Number of Macrophages: " + str(self.num_phages))
-        self.STATE = State()
+        self.STATE = State(str(self.payoff))
+        print(self.STATE.get_payoff())
         if self.STATE.add_grid(Grid(self.size)) == None:
             self.logger.error("Grid could not be initilized!")
         possible_positions = self.STATE.init_possible_positions()

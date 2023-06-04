@@ -8,7 +8,7 @@ if len(sys.argv) > 1:
 
     ratio = (int(sys.argv[1]), int(sys.argv[2]))
     
-    simulation = simulator.Simulation([50, 50, 70, 30])
+    simulation = simulator.Simulation([50, 50, 70, 30, sys.argv[4]])
     win_tuple = window.init(ratio, simulation)
     i = 0
     max_steps = int(sys.argv[3])

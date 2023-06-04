@@ -39,3 +39,5 @@ class Payoff():
     def score(self, action_p1, action_p2):
         return self.score_comp[action_p1][action_p2]
 
+    def __str__(self):
+        return str((self.mpp, self.mpa, self.map, self.maa, self.cpp, self.cpa, self.cap, self.caa))
