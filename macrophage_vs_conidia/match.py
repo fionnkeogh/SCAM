@@ -19,6 +19,8 @@ class Match():
             action_p1 = self.macrophage.get_action()
             action_p2 = self.candida.get_action()
 
+            #print(action_p1)
+            #print(action_p2)
             if random.random() <= self.err_rate:
                 action_p1 = self.macrophage.flip(action_p1)
             if random.random() <= self.err_rate:
@@ -36,6 +38,24 @@ class Match():
             
             self.macrophage.add_score(payoff_p1)
             self.candida.add_score(payoff_p2)
+        if random.random() <= 0.1:
+            mut = random.randint(0, 11)
+            if mut <= 5:
+                self.macrophage.point_mut()
+            elif mut > 5 and mut < 8:
+                self.macrophage.decr_memory()
+            else:
+                self.macrophage.incr_memory()
+
+        if random.random() <= 0.1:
+            mut = random.randint(0, 11)
+            if mut <= 5:
+                self.candida.point_mut()
+            elif mut > 5 and mut < 8:
+                self.candida.decr_memory()
+            else:
+                self.candida.incr_memory()
+        
         if played_passive:
             return 1
         else:

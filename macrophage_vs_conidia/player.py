@@ -48,15 +48,17 @@ class Player():
         self.make_dict()
 
     def decr_memory(self):
-        index = len(self.strategy) / 2
-        strat_a = self.strategy[:index]
-        strat_b = self.strategy[index:]
-        r = random.randint(0,1)
-        if r == 0:
-            self.strategy = strat_a
-        else:
-            self.strategy = strat_b
-        self.memory = self.memory - 1
+        if len(self.strategy) >= 4:
+            index = int(len(self.strategy) / 2)
+            strat_a = self.strategy[:index]
+            strat_b = self.strategy[index:]
+            r = random.randint(0,1)
+            if r == 0:
+                self.strategy = strat_a
+            else:
+                self.strategy = strat_b
+            self.memory = self.memory - 1
+            self.make_dict()
 
     def add_score(self, score):
         self.score += score
