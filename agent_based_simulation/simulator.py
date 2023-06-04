@@ -1,10 +1,11 @@
-import agent_based_simulation.logging as logging
-import agent_based_simulation.grid as grid
+import agent_based_simulation.myLogging as logging
+from agent_based_simulation.grid import Grid, Cytokine
 from agent_based_simulation.candida import Candida
 from agent_based_simulation.macrophage import Macrophage
 from macrophage_vs_conidia.match import Match
 from macrophage_vs_conidia.payoff import Payoff
 import random
+import copy
 
 class State:
     def __init__(self):
@@ -31,6 +32,30 @@ class State:
     
     def add_macrophage(self, macrophage):
         self.STATE["Macrophages"].append(macrophage)
+
+    def add_cytokine(self, macrophage):
+        pos = (macrophage.x_pos, macrophage.y_pos)
+        for cytokine in self.STATE["CytokineElements"]:
+            if cytokine.get_position() == (pos[0]+1,pos[1]+1):
+                return None
+            if cytokine.get_position() == (pos[0]+0,pos[1]+1):
+                return None
+            if cytokine.get_position() == (pos[0]+1,pos[1]+0):
+                return None
+            if cytokine.get_position() == (pos[0]+0,pos[1]+0):
+                return None
+            if cytokine.get_position() == (pos[0]-1,pos[1]-1):
+                return None
+            if cytokine.get_position() == (pos[0]-0,pos[1]-1):
+                return None
+            if cytokine.get_position() == (pos[0]-1,pos[1]-0):
+                return None
+            if cytokine.get_position() == (pos[0]-0,pos[1]-0):
+                return None
+        self.STATE["CytokineElements"].append(Cytokine(len(self.STATE["CytokineElements"]), 2, pos, (115, 9, 9), macrophage.ID))
+
+    def remove_cytokine(self, cytokine):
+        self.STATE["CytokineElements"].remove(cytokine)
 
     def get_state(self):
         # should return a stringyfied state.
@@ -60,14 +85,17 @@ class State:
         else:
             return self.STATE["Grid"][0].get_init_positions()
 
-    def get_objects(self):
-        return [*self.STATE["Pathogens"], *self.STATE["Macrophages"], *self.STATE["CytokineElements"]]
+    def get_agents(self):
+        return [*self.STATE["Pathogens"], *self.STATE["Macrophages"]]
     
     def get_macrophage_objects(self):
         return [*self.STATE["Macrophages"]]
     
     def get_pathogen_objects(self):
         return [*self.STATE["Pathogens"]]
+
+    def get_cytokine_objects(self):
+        return [*self.STATE["CytokineElements"]]
 
     def get_payoff(self):
         return self.STATE["PayOff"]
@@ -115,7 +143,7 @@ class Simulation:
         self.logger.log("Number of Pathogens: " + str(self.num_path))
         self.logger.log("Number of Macrophages: " + str(self.num_phages))
         self.STATE = State()
-        if self.STATE.add_grid(grid.Grid(self.size)) == None:
+        if self.STATE.add_grid(Grid(self.size)) == None:
             self.logger.error("Grid could not be initilized!")
         possible_positions = self.STATE.init_possible_positions()
         if possible_positions == None:
@@ -153,8 +181,14 @@ class Simulation:
     def step(self):
         self.logger.log("NEXT STEP:")
         self.STATE.increase_time()
-        for obj in self.STATE.get_objects():
+        for obj in self.STATE.get_agents():
+            if(type(obj) == Macrophage):
+                obj.get_dircetion(copy.deepcopy(self.STATE))
             obj.update()
+        for obj in self.STATE.get_cytokine_objects():
+            delete = obj.update()
+            if delete != None:
+                self.STATE.remove_cytokine(obj)
         games = list()
         pathogens = self.STATE.get_pathogen_objects()
         for macrophage in self.STATE.get_macrophage_objects():
@@ -167,5 +201,7 @@ class Simulation:
         self.logger.log("GAMES:")
         for game in games:
             match = Match(game[0].brain, game[1].brain, self.STATE.get_payoff(), 5, 0.1)
-            match.play()
+            played_passive = match.play()
+            if played_passive != None:
+                self.STATE.add_cytokine(game[0])
             self.logger.log(str(match.get_results()))

@@ -10,12 +10,12 @@ if len(sys.argv) > 1:
     simulation = simulator.Simulation([50, 50, 70, 30])
     win_tuple = window.init(ratio, simulation)
     i = 0
-    max_steps = 100
+    max_steps = int(sys.argv[3])
     while True:
         if i < max_steps:
             simulation.step()
             i += 1
-        window.update(win_tuple[0], win_tuple[1], simulation)
+        window.update(win_tuple[0], ratio, win_tuple[1], simulation)
     #window.run(ratio)
 else:
     simulation = simulator.Simulation([100, 100, 70, 30])
