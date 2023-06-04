@@ -1,4 +1,4 @@
-import agent_based_simulation.logging as logging
+import agent_based_simulation.myLogging as logging
 from agent_based_simulation.grid import Grid, Cytokine
 from agent_based_simulation.candida import Candida
 from agent_based_simulation.macrophage import Macrophage
@@ -34,9 +34,26 @@ class State:
     def add_cytokine(self, macrophage):
         pos = (macrophage.x_pos, macrophage.y_pos)
         for cytokine in self.STATE["CytokineElements"]:
-            if cytokine.get_position() == pos:
+            if cytokine.get_position() == (pos[0]+1,pos[1]+1):
                 return None
-        self.STATE["CytokineElements"].append(Cytokine(len(self.STATE["CytokineElements"]), 2, pos, "darkgreen", macrophage.ID))
+            if cytokine.get_position() == (pos[0]+0,pos[1]+1):
+                return None
+            if cytokine.get_position() == (pos[0]+1,pos[1]+0):
+                return None
+            if cytokine.get_position() == (pos[0]+0,pos[1]+0):
+                return None
+            if cytokine.get_position() == (pos[0]-1,pos[1]-1):
+                return None
+            if cytokine.get_position() == (pos[0]-0,pos[1]-1):
+                return None
+            if cytokine.get_position() == (pos[0]-1,pos[1]-0):
+                return None
+            if cytokine.get_position() == (pos[0]-0,pos[1]-0):
+                return None
+        self.STATE["CytokineElements"].append(Cytokine(len(self.STATE["CytokineElements"]), 2, pos, (115, 9, 9), macrophage.ID))
+
+    def remove_cytokine(self, cytokine):
+        self.STATE["CytokineElements"].remove(cytokine)
 
     def get_state(self):
         # should return a stringyfied state.
@@ -142,6 +159,10 @@ class Simulation:
             if(type(obj) == Macrophage):
                 obj.get_dircetion(copy.deepcopy(self.STATE))
             obj.update()
+        for obj in self.STATE.get_cytokine_objects():
+            delete = obj.update()
+            if delete != None:
+                self.STATE.remove_cytokine(obj)
         games = list()
         pathogens = self.STATE.get_pathogen_objects()
         for macrophage in self.STATE.get_macrophage_objects():

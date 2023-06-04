@@ -15,7 +15,7 @@ if len(sys.argv) > 1:
         if i < max_steps:
             simulation.step()
             i += 1
-        window.update(win_tuple[0], win_tuple[1], simulation)
+        window.update(win_tuple[0], ratio, win_tuple[1], simulation)
     #window.run(ratio)
 else:
     simulation = simulator.Simulation([100, 100, 70, 30])

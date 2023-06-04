@@ -1,6 +1,7 @@
 import math
 from agent_based_simulation.agent import Agent, AgentTypes
 from macrophage_vs_conidia.macrophage import Macrophage as MacrophageBrain
+from agent_based_simulation.directions import directions
 
 class Macrophage(Agent):
 
@@ -17,11 +18,13 @@ class Macrophage(Agent):
         return games
 
     def get_max_gradient(self, gradients):
-        max_distance = math.inf
+        force = -1
         best_gradient = -1
         for i, gradient in enumerate(gradients):
-            if gradient[2] < max_distance:
-                best_gradient = i
+            if gradient[2] < 10:
+                if gradient[3] > force:
+                    force = gradient[3]
+                    best_gradient = i
         return best_gradient
 
 
@@ -32,14 +35,29 @@ class Macrophage(Agent):
             x,y = cytokine.get_position()
             mid = (self.x_pos + self.size*0.5, self.y_pos + self.size*0.5)
             dist = math.sqrt(abs(x-mid[0])**2+abs(y-mid[1])**2)
-            gradients.append((self.x_pos-x, self.y_pos-y, dist))
+            gradients.append((self.x_pos-x, self.y_pos-y, dist, cytokine.compute_gaussian_kernal()[0]))
         indx = self.get_max_gradient(gradients)
         if indx >= 0:
             gradient = cytokines[indx]
-            print()
+            #print(f'{str(self)} moves towards {str(gradient)}')
+            x,y = gradient.get_position()
+            x = self.x_pos-x
+            y = self.y_pos-y
+            if x == 0 and y == 0:
+                return None
+            if abs(x) > abs(y):
+                if x >= 0:
+                    return directions.WEST
+                else:
+                    return directions.EAST
+            else:
+                if y >= 0:
+                    return directions.NORTH
+                else:
+                    return directions.SOUTH
+        return None
 
     def get_dircetion(self, state):
         cytokines = state.get_cytokine_objects()
-        self.check_for_gradient(cytokines)
-        return None
+        return self.check_for_gradient(cytokines)
     
