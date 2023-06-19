@@ -33,8 +33,8 @@ class Match():
             payoff_p1 = result[0]
             payoff_p2 = result[1]
             
-            if int(action_p1) == 0:
-                played_passive = True
+            #if int(action_p1) == 0:
+            played_passive = True
             
             self.macrophage.add_score(payoff_p1)
             self.candida.add_score(payoff_p2)

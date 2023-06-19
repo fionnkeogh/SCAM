@@ -8,7 +8,7 @@ class Cytokine:
         self.ID = ID
         self.spawnerID = spawnerID
         self.size = size
-        self.timer = random.randint(8, 12)
+        self.timer = random.randint(48, 52)
         self.max_timer = self.timer
         self.position = pos
         self.color = color
@@ -24,7 +24,7 @@ class Cytokine:
         return math.exp(-t) * scipy.special.iv(n, t)
 
     def compute_gaussian_kernal(self):
-        ns = np.arange(-5, 5+1)
+        ns = np.arange(-10, 10+1)
         step = (np.round(np.logspace(0,2.0436, num=self.max_timer, base=4),2)-1)[self.timer-1]
         y0 = self.discrete_gaussian_kernel(step, ns)
         self.diameter = len(np.nonzero(np.round(y0,2))[0])-1

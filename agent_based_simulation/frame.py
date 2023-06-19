@@ -83,7 +83,7 @@ def spawn_cytokines(canvas, size, simulation):
     canvas_cytokine = canvas.create_rectangle(x, y, x+(width*cytokine.size), y+(height*cytokine.size), fill=color)
     canvas.tag_lower(canvas_cytokine)
     canvas_cytokines.append(canvas_cytokine)
-    neighbors = get_moore_neighbors(simulation.size, cytokine.get_position()[1], cytokine.get_position()[0], 6)
+    neighbors = get_moore_neighbors(simulation.size, cytokine.get_position()[1], cytokine.get_position()[0], 11)
     for neighbor in neighbors:
       mid = (cytokine.get_position()[0] + cytokine.size*0.5, cytokine.get_position()[1] + cytokine.size*0.5)
       dist = int(math.sqrt(abs(neighbor[1]-mid[0])**2+abs(neighbor[0]-mid[1])**2))
