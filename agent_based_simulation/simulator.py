@@ -6,6 +6,7 @@ from macrophage_vs_conidia.match import Match
 from macrophage_vs_conidia.payoff import Payoff
 import random
 import copy
+from collections import defaultdict
 
 class State:
     def __init__(self, payoff_type):
@@ -99,6 +100,9 @@ class State:
 
     def get_payoff(self):
         return self.STATE["PayOff"]
+    
+    def get_time(self):
+        return self.STATE["Step"]
 
     def increase_time(self):
         self.STATE["Step"] += 1
@@ -133,6 +137,8 @@ class State:
 class Simulation:
     def __init__(self, args):
         self.logger = logging.Logger()
+        self.m_strat_series = {}
+        self.p_strat_series = {}
         if(len(args) < 1):
             self.size = (100, 100)
             self.num_path = 70
@@ -200,6 +206,20 @@ class Simulation:
         self.play_games(games)
         self.STATE.update_strategies()
         self.logger.log_state(self.STATE.get_state())
+
+    def get_m_strat_series(self):
+        return self.m_strat_series
+    
+    def get_p_strat_series(self):
+        return self.p_strat_series
+
+    def update_time_series(self):
+        time = self.STATE.get_time()
+        default_value = 0
+        macro_strats = defaultdict(lambda: default_value, self.STATE.get_macrophage_strategies())
+        patho_strats = defaultdict(lambda: default_value, self.STATE.get_pathogen_strategies())
+        self.m_strat_series[time] = macro_strats
+        self.p_strat_series[time] = patho_strats
 
     def play_games(self, games):
         self.logger.log("GAMES:")
