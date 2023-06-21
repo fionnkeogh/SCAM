@@ -2,7 +2,8 @@ import datetime
 
 class Logger:
     def __init__(self):
-        self.log_path = "log/"+str(datetime.datetime.now())+".log"
+        current_time = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
+        self.log_path = "log/"+current_time+".log"
         self.log_file = open(self.log_path, "a")
 
     def __del__(self):
