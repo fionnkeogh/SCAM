@@ -85,5 +85,24 @@ if len(sys.argv) > 1:
     plot_strategies(observed_objects["p_strategies"], "Pathogen Strategies")
     #window.run(ratio)
 else:
-    simulation = simulator.Simulation([100, 100, 70, 30])
-    #window.run()
+    ratio = (600, 600)
+
+    simulation = simulator.Simulation([100, 100, 70, 30, "patho2"])
+    
+    win_tuple = window.init(ratio, simulation)
+    i = 0
+    max_steps = int(100)
+    add_observer("m_strategies", simulation.STATE.get_macrophage_strategies)
+    add_observer("p_strategies", simulation.STATE.get_pathogen_strategies)
+    observe()
+    while True:
+        if i < max_steps:
+            simulation.step()
+            observe()
+            i += 1
+        else:
+            break
+            #plt.plot()
+        window.update(win_tuple[0], ratio, win_tuple[1], simulation)
+    plot_strategies(observed_objects["m_strategies"], "Macrophage Strategies")
+    plot_strategies(observed_objects["p_strategies"], "Pathogen Strategies")
