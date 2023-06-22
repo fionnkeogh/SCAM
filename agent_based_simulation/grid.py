@@ -1,8 +1,7 @@
 import random
 import math
 import numpy as np
-import scipy
-
+import scipy.special
 class Cytokine:
     def __init__(self, ID, size, pos, color, spawnerID):
         self.ID = ID
