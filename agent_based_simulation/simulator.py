@@ -205,6 +205,8 @@ class Simulation:
             games.extend(macrophage.check_for_game(pathogens))
         self.play_games(games)
         self.STATE.update_strategies()
+        if self.STATE.get_time()%2 == 0:
+            self.selection(10)
         self.logger.log_state(self.STATE.get_state())
 
     def get_m_strat_series(self):
@@ -229,3 +231,35 @@ class Simulation:
             if played_passive != None:
                 self.STATE.add_cytokine(game[0])
             self.logger.log(str(match.get_results()))
+    
+    def selection(self, rank):
+        macrophages = self.STATE.get_macrophage_objects()
+        scores = {}
+        for macrophage in macrophages:
+            score = macrophage.brain.get_score()
+            name = macrophage.get_ID()
+            scores[macrophage] = score
+        sorted_scores = dict(sorted(scores.items(), key=lambda x: x[1]))
+        parents = list(dict(sorted_scores).keys())[-rank:]
+        middle = list(dict(sorted_scores).keys())[-rank:rank]
+        losers = list(dict(sorted_scores).keys())[:rank]
+        children = list()
+        possible_positions = self.STATE.init_possible_positions()
+        if possible_positions == None:
+            self.logger.error("No grid to get positions for.")
+        for parent in parents:
+            pos = random.choice(list(possible_positions.keys()))
+            possible_positions.pop(pos)
+            pos = str(pos).replace("(", "").replace(")", "").split(",")
+            y = int(pos[0])*2
+            x = int(pos[1])*2
+            children.append(parent.spawn_child(x, y))
+        updated_macros = parents + middle + children
+    for macro in updated_macros:
+        pass
+        # self.STATE.add_macrophage(macro)
+
+
+
+
+    

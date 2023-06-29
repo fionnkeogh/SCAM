@@ -2,12 +2,13 @@ import math
 from agent_based_simulation.agent import Agent, AgentTypes
 from macrophage_vs_conidia.macrophage import Macrophage as MacrophageBrain
 from agent_based_simulation.directions import directions
+import copy
 
 class Macrophage(Agent):
 
     def __init__(self, ID, x = 0, y = 0, d = 0, bounds_x = 30, bounds_y = 30):
-        super().__init__(ID, MacrophageBrain(ID, '0101'), x, y, d, 2, "blue", AgentTypes.MACROPHAGE, bounds_x, bounds_y)
-    
+            super().__init__(ID, MacrophageBrain(ID, '0101'), x, y, d, 2, "blue", AgentTypes.MACROPHAGE, bounds_x, bounds_y)
+
     def check_for_game(self, pathogens):
         games = list()
         mid = (self.x_pos + self.size*0.5, self.y_pos + self.size*0.5)
@@ -60,4 +61,19 @@ class Macrophage(Agent):
     def get_dircetion(self, state):
         cytokines = state.get_cytokine_objects()
         return self.check_for_gradient(cytokines)
+    
+    def change_ID(self, ID):
+        self.ID = ID
+    
+    
+    def spawn_child(self, x, y):
+        self.add_child
+        child_ID = str(self.get_ID()) + '.' + str(self.get_children())
+        child = copy.deepcopy(self)
+        child.change_ID(child_ID)
+        child.brain.random_mut()
+        return child
+    
+    
+    
     

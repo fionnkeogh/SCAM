@@ -60,11 +60,20 @@ class Player():
             self.memory = self.memory - 1
             self.make_dict()
 
+    def random_mut(self):
+        mutations = ['point_mut', 'incr_memory', 'decr_memory']
+        random_mutation = random.choice(mutations)
+        mutation_function = getattr(self, random_mutation)
+        mutation_function()
+
     def add_score(self, score):
         self.score += score
 
     def reset_score(self):
         self.score = 0
+
+    def get_score(self):
+        return self.score
     
     def get_strategy(self):
         return self.strategy

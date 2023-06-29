@@ -19,6 +19,7 @@ class Agent:
         self.type = agent_type
         self.bounds_x = bounds_x
         self.bounds_y = bounds_y
+        self.number_of_children = 0
     
     def update(self):
         self.move()
@@ -68,3 +69,15 @@ class Agent:
     def randomStep(self):
         """This will return a random step length between 0 and 1, with a 0.1f stepsize."""
         return float(random.randomint(0, 10))/10
+    
+    def get_ID(self):
+        return self.ID
+    
+    def get_children(self):
+        return self.number_of_children
+    
+    def add_child(self):
+        self.number_of_children += 1
+
+    def get_brain(self):
+        return self.brain
