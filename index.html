@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/macrophage.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SCAM</title>
+    <script defer onload="console.log(`${pyscript.version}`);" src="https://pyscript.net/latest/pyscript.js"></script>
+    <py-config type="json" style="display: none;">
+        {
+          "packages": [
+            "numpy",
+            "scipy"
+          ],
+          "fetch": [
+            {
+              "files": [
+                "./python/main.py",
+                "./python/grid.py",
+                "./python/cytokine.py",
+                "./python/player.py",
+                "./python/macrophage.py",
+                "./python/candida.py",
+                "./python/simulation.py"
+              ]
+            }
+          ]
+        }
+        
+    </py-config>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="js/canvasObject.js"></script>
+    <script src="js/grid.js"></script>
+    <script src="js/cytokine.js"></script>
+    <script src="js/macrophages.js"></script>
+    <script src="js/candida.js"></script>
+    <script src="js/canvas.js"></script>
+  </head>
+  <body>
+    <py-script>
+        import js
+        from pyodide.ffi import create_proxy
+        from python.main import init_simulation, get_simulation, Simulation
+
+        js.createObject(create_proxy(globals()), "pyodideGlobals")
+    </py-script>
+    <div id="app"></div>
+    <script type="module" src="/src/main.js"></script>
+    <script>
+      function createObject(object, variableName){
+        //Bind a variable whose name is the string variableName
+        // to the object called 'object'
+        let execString = variableName + " = object"
+        console.log("Running '" + execString + "'");
+        eval(execString)
+      }
+    </script>
+    <py-terminal style="display: none;"></py-terminal>
+  </body>
+</html>
