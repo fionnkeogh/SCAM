@@ -3,10 +3,13 @@ class Payoff():
 
 
     def __init__(self, *args):
+        mpp, mpa, map, maa, cpp, cpa, cap, caa = 0, 0, 0, 0, 0, 0, 0, 0
 
         if len(args) == 0:
             mpp, mpa, map, maa, cpp, cpa, cap, caa = 1, 0, 2, -2, 1, 0, 2, -2
 
+        elif isinstance(args[0], float):
+            mpp, mpa, map, maa, cpp, cpa, cap, caa = args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7]
         elif isinstance(args[0], int):
             mpp, mpa, map, maa, cpp, cpa, cap, caa = args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7]
         
@@ -21,8 +24,6 @@ class Payoff():
                 mpp, mpa, map, maa, cpp, cpa, cap, caa = 3, 1, 0, 2, 2, 0, 1, 1
 
         
-
-
         self.mpp = mpp
         self.mpa = mpa
         self.map = map

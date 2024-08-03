@@ -1,6 +1,6 @@
-from macrophage_vs_conidia.macrophage import Macrophage
-from macrophage_vs_conidia.candida import Candida
-from macrophage_vs_conidia.payoff import Payoff
+from macrophage import Macrophage
+from candida import Candida
+from payoff import Payoff
 import random
 
 
@@ -15,6 +15,8 @@ class Match():
     
     def play(self):
         played_passive = False
+        payoff_p1 = 0
+        payoff_p2 = 0
         for i in range(self.rounds):
             action_p1 = self.macrophage.get_action()
             action_p2 = self.candida.get_action()
@@ -28,38 +30,15 @@ class Match():
 
             self.macrophage.add_history(action_p1 + action_p2)
             self.candida.add_history(action_p2 + action_p1)
-
             result = self.payoff.score(int(action_p1), int(action_p2))
-            payoff_p1 = result[0]
-            payoff_p2 = result[1]
+            payoff_p1 += result[0]
+            payoff_p2 += result[1]
             
             #if int(action_p1) == 0:
             played_passive = True
-            
-            self.macrophage.add_score(payoff_p1)
-            self.candida.add_score(payoff_p2)
-        if random.random() <= 0.1:
-            mut = random.randint(0, 11)
-            if mut <= 5:
-                self.macrophage.point_mut()
-            elif mut > 5 and mut < 8:
-                self.macrophage.decr_memory()
-            else:
-                self.macrophage.incr_memory()
 
-        if random.random() <= 0.1:
-            mut = random.randint(0, 11)
-            if mut <= 5:
-                self.candida.point_mut()
-            elif mut > 5 and mut < 8:
-                self.candida.decr_memory()
-            else:
-                self.candida.incr_memory()
-        
-        if played_passive:
-            return 1
-        else:
-            return None
+        return (payoff_p1, payoff_p2)
+
 
     def get_results(self):
         return (self.macrophage.score, self.candida.score)

@@ -1,9 +1,9 @@
-from macrophage_vs_conidia.player import Player
+from player import Player
 
 class Candida(Player):
     
-    def __init__(self, name, strategy):
-        super().__init__(name, strategy)
+    def __init__(self, strategy, generator):
+        super().__init__(strategy, generator)
         self.type = 'candida'
 
 
