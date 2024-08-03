@@ -43,9 +43,12 @@ class Player():
         self.make_dict()
 
     def incr_memory(self):
-        self.strategy = self.strategy + self.strategy
-        self.memory = self.memory + 1
-        self.make_dict()
+        if len(self.strategy) <= 8:
+            self.strategy = self.strategy + self.strategy
+            self.memory = self.memory + 1
+            self.make_dict()
+        else:
+            pass
 
     def decr_memory(self):
         if len(self.strategy) >= 4:
