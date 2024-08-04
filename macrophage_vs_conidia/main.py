@@ -2,7 +2,7 @@ from payoff import Payoff
 from simulator import Simulator
 import matplotlib.pyplot as plt
 
-macrophage_replication_rate = {'normal': 0.0176, 'high': 0.059, 'maximal': 0.266} # alpha
+macrophage_replication_rate = {'normal': 0.03, 'high': 0.059, 'maximal': 0.266} # alpha
 candida_replication_rate = 0.0393 # delta
 macrophage_death_rate = 0.0676 # nu
 candida_death_rate = 0.0797 # lambda
@@ -31,18 +31,18 @@ caa = (1-macrophage_win_probability)*(fc_max - ic2 - rc)
 payoff = Payoff(mpp,mpa,map,maa,cpp,cpa,cap,caa)
 
 simulation = Simulator(
-    1000, 
-    1000, 
+    100, 
+    100, 
     '11', 
     '11', 
     payoff, 
-    100, 
+    1000, 
     (5, 15), 
     2*10**-5, 
     1*10**-5, 
     macrophage_death_rate, 
     candida_death_rate, 
-    macrophage_replication_rate.get("high"), 
+    macrophage_replication_rate.get("normal"), 
     candida_replication_rate
 )
 
