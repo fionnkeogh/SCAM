@@ -62,7 +62,7 @@ def timestep(macrophages, candidas, params, rng):
 
 
 def main():
-    rng = np.random.default_rng(1234)
+    rng = np.random.default_rng()
 
     macrophages = initialise_m(rng)
     candida = initialise_c(rng)

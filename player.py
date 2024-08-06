@@ -3,8 +3,7 @@ import math
 class Player:
     def __init__(self, strategy, generator):
         """
-        Each bird has a strategy type (hawk or dove)
-        And a small starting fitness
+        Each player has a strategy type (1 or 0)
         """
         self.strategy = strategy
         self.fitness = 10
