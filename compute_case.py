@@ -1,14 +1,14 @@
 
-Fc_max = 1.9
-Fm_max = 2
-Ic_1 = 0.8
-Ic_2 = 1.2
-Im_1 = 0.449
-Im_2 = 0.85
+Fc_max = 10
+Fm_max = 10
+Ic_1 = 1
+Ic_2 = 2
+Im_1 = 1
+Im_2 = 2
 Rc = 1
 Rm = 1
-S1 = 0.4
-S2 = 0.3
+S1 = 10
+S2 = 5
 Pm = 0.54
 
 eq_21 = Pm*(Fm_max - Im_2 - Rm)
